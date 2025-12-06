@@ -1,0 +1,177 @@
+{% load static %}
+{% load filters %}
+
+<style>
+  .contact-box {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    position: sticky;
+    top: 100px;
+  }
+  
+  .realtor-header {
+    padding: 2rem;
+    text-align: center;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  
+  .realtor-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-green);
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-md);
+  }
+  
+  .realtor-header h5 {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .realtor-header h6 {
+    color: var(--primary-dark);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  .contact-box-body {
+    padding: 2rem;
+  }
+  
+  .contact-title {
+    color: var(--accent-green);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .auth-prompt {
+    text-align: center;
+    padding: 1rem;
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    margin-bottom: 1.5rem;
+  }
+  
+  .auth-prompt p {
+    color: var(--gray-700);
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .btn-auth {
+    width: 100%;
+    padding: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    transition: var(--transition-base);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+  }
+  
+  .btn-login {
+    background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
+    border: none;
+    color: white;
+    margin-bottom: 0.75rem;
+  }
+  
+  .btn-login:hover {
+    background: linear-gradient(135deg, var(--accent-green-dark) 0%, #047857 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: white;
+  }
+  
+  .btn-register {
+    background: white;
+    border: 2px solid var(--accent-green);
+    color: var(--accent-green);
+  }
+  
+  .btn-register:hover {
+    background: var(--accent-green);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  @media (max-width: 991px) {
+    .contact-box {
+      position: relative;
+      top: 0;
+      margin-bottom: 2rem;
+    }
+  }
+</style>
+
+<!-- Contact Box -->
+<div class="col-12 col-lg-4">
+  <div class="contact-box">
+    
+    <!-- Realtor Header -->
+    <div class="realtor-header">
+      <img src="{{ listing.realtor.photo.url }}" 
+           alt="{{ listing.realtor }}" 
+           class="realtor-avatar">
+      <h5>{{ _("Property Realtor") }}</h5>
+      <h6>{{ listing.realtor }}</h6>
+    </div>
+
+    <!-- Contact Body -->
+    <div class="contact-box-body">
+      
+      {% if user.is_authenticated %}
+        
+        {% with listing.id|listing_exists as contact %}
+          {% if contact %}
+            <!-- Existing Contact Form -->
+            <h5 class="contact-title">
+              <i class="fas fa-comments mr-2"></i>
+              {{ _("Continue Conversation") }}
+            </h5>
+            {% include 'contacts/_partials/_user_contact_form.html' %}
+          {% else %}
+            <!-- New Inquiry Form -->
+            <h5 class="contact-title">
+              <i class="fas fa-envelope mr-2"></i>
+              {{ _("Get in touch") }}
+            </h5>
+            {% include 'contacts/_partials/_user_inquiry_form.html' %}
+          {% endif %}
+        {% endwith %}
+
+      {% else %}
+        
+        <!-- Authentication Required -->
+        <div class="auth-prompt">
+          <i class="fas fa-lock fa-2x text-muted mb-3"></i>
+          <p>{{ _("Please login or register to get in touch") }}</p>
+        </div>
+
+        <a href="{% url 'login' %}" class="btn btn-login btn-auth">
+          <i class="fas fa-sign-in-alt mr-2"></i>
+          {{ _("Login") }}
+        </a>
+        
+        <a href="{% url 'register' %}" class="btn btn-register btn-auth">
+          <i class="fas fa-user-plus mr-2"></i>
+          {{ _("Register") }}
+        </a>
+
+      {% endif %}
+
+    </div>
+  </div>
+</div>

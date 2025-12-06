@@ -1,0 +1,142 @@
+{% load static %}
+
+<!-- Professional Search Form -->
+<div class="search">
+  <form action="{% url 'search' %}" method="GET">
+    {% csrf_token %}
+    
+    <div class="form-row">
+      
+      <!-- Keywords Input -->
+      <div class="input-group col-12 col-sm-6 col-md-3 mb-3">
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="fas fa-search"></i>
+          </span>
+        </div>
+        <input type="text" 
+               name="keywords" 
+               class="form-control"
+               placeholder='{{ _("Keyword (Pool, Garage, etc)") }}'
+               aria-label="Search keywords">
+      </div>
+
+      <!-- City Input -->
+      <div class="input-group col-12 col-sm-6 col-md-3 mb-3">
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="fas fa-city"></i>
+          </span>
+        </div>
+        <input type="text" 
+               name="city" 
+               class="form-control" 
+               placeholder='{{ _("City") }}'
+               value="{{ values.city }}"
+               aria-label="City">
+      </div>
+
+      <!-- State Selector -->
+      <div class="input-group col-12 col-sm-6 col-md-3 mb-3">
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="fas fa-map-marker-alt"></i>
+          </span>
+        </div>
+        <select name="state" class="form-control" aria-label="State">
+          <option selected="true">{{ _("States (All)") }}</option>
+          {% for state in states %}
+            <option value="{{ state.id }}">{{ state.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Type Selector -->
+      <div class="input-group col-12 col-sm-6 col-md-3 mb-3">
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="fas fa-home"></i>
+          </span>
+        </div>
+        <select name="listing_type" class="form-control" aria-label="Property type">
+          <option selected="true">{{ _("Type (All)") }}</option>
+          {% for type in list_types %}
+            <option value="{{ type.id }}">{{ type.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Min Bedrooms -->
+      <div class="input-group col-6 col-md-3 mb-3">
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="fas fa-bed"></i>
+          </span>
+        </div>
+        <input type="number" 
+               name="bedrooms" 
+               class="form-control" 
+               placeholder="{{ _('Min bedrooms') }}"
+               value="{{ values.bedrooms }}"
+               min="0"
+               aria-label="Minimum bedrooms">
+      </div>
+
+      <!-- Min Bathrooms -->
+      <div class="input-group col-6 col-md-3 mb-3">
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="fas fa-bath"></i>
+          </span>
+        </div>
+        <input type="number" 
+               name="bathrooms" 
+               class="form-control" 
+               placeholder="{{ _('Min bathrooms') }}"
+               value="{{ values.bathrooms }}"
+               min="0"
+               aria-label="Minimum bathrooms">
+      </div>
+
+      <!-- Min Square Meters -->
+      <div class="input-group col-6 col-md-3 mb-3">
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="fas fa-ruler-combined"></i>
+          </span>
+        </div>
+        <input type="number" 
+               name="sqft" 
+               class="form-control" 
+               placeholder='{{ _("Min m²") }}' 
+               value="{{ values.sqft }}"
+               min="0"
+               aria-label="Minimum square meters">
+      </div>
+
+      <!-- Max Price -->
+      <div class="input-group col-6 col-md-3 mb-3">
+        <div class="input-group-append">
+          <span class="input-group-text">
+            <i class="fas fa-dollar-sign"></i>
+          </span>
+        </div>
+        <input type="number" 
+               name="price" 
+               class="form-control" 
+               placeholder='{{ _("Max price") }}' 
+               value="{{ values.price }}"
+               min="0"
+               aria-label="Maximum price">
+      </div>
+
+    </div>
+
+    <!-- Search Button -->
+    <button class="btn btn-secondary btn-block" type="submit">
+      <i class="fas fa-search mr-2"></i>
+      {{ _("Search") }}
+    </button>
+    
+  </form>
+</div>

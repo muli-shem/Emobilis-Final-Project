@@ -1,0 +1,294 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block extrastyle %}
+<meta name="description" content="Real estate manager. This is the dashboard. You can manage your listings, documents and history here."/>
+<style>
+  /* Dashboard Specific Styles */
+  #dashboard .property-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-base);
+    border-left: 4px solid var(--accent-green);
+  }
+  
+  #dashboard .property-card:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  #dashboard .property-title {
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+  }
+  
+  #dashboard .property-date {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+  }
+  
+  #dashboard .stats-card {
+    background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    color: white;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-base);
+  }
+  
+  #dashboard .stats-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+  }
+  
+  #dashboard .stats-icon {
+    font-size: 2.5rem;
+    opacity: 0.9;
+  }
+  
+  #dashboard .stats-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+  }
+  
+  #dashboard .stats-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+  
+  #dashboard .action-btn-group .btn {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    transition: var(--transition-base);
+  }
+  
+  #dashboard .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: var(--gray-50);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--gray-300);
+  }
+  
+  #dashboard .empty-state i {
+    font-size: 4rem;
+    color: var(--gray-400);
+    margin-bottom: 1rem;
+  }
+</style>
+{% endblock %}
+
+{% block title %} | User Dashboard {% endblock %}
+
+{% block content %}
+
+<!-- Hero Header -->
+<section id="showcase-inner" class="py-5">
+  <div class="container">
+    <div class="bg-blur-all p-4 p-md-5 text-center">
+      <h1 class="display-4 font-weight-bold text-white mb-3">
+        <i class="fas fa-tachometer-alt mr-3"></i>
+        {{ _("Dashboard") }}
+      </h1>
+      <p class="lead text-white mb-0">{{ _("Manage your Real-Estate account") }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="py-3 bg-light">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent mb-0">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}">
+            <i class="fas fa-home"></i> {{ _("Home") }}
+          </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ _("Dashboard") }}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- Alerts -->
+{% include 'core/partials/_alerts.html' %}
+
+<!-- Dashboard Content -->
+<section id="dashboard" class="py-5">
+  <div class="container">
+    
+    <!-- Welcome Header -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <h2 class="font-weight-bold text-primary-dark mb-2">
+          {{ _("Welcome") }}, {{ user.first_name }}!
+        </h2>
+        <p class="text-muted">
+          {{ _("Here are the property listings that you have inquired about") }}
+        </p>
+      </div>
+    </div>
+
+    {% if contacts %}
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-5">
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
+        <div class="stats-card">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="stats-number">{{ contacts|length }}</div>
+              <div class="stats-label">{{ _("Total Inquiries") }}</div>
+            </div>
+            <div class="stats-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
+        <div class="stats-card" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="stats-number">
+                {% widthratio contacts|length 1 1 %}
+              </div>
+              <div class="stats-label">{{ _("Active Properties") }}</div>
+            </div>
+            <div class="stats-icon">
+              <i class="fas fa-building"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-4">
+        <div class="stats-card" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="stats-number">
+                {{ contacts.0.listing.id|get_nr_docs|default:"0" }}
+              </div>
+              <div class="stats-label">{{ _("Documents") }}</div>
+            </div>
+            <div class="stats-icon">
+              <i class="fas fa-folder"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Properties List -->
+    <div class="row">
+      <div class="col-12">
+        <h3 class="font-weight-bold mb-4">
+          <i class="fas fa-list mr-2 text-success"></i>
+          {{ _("Your Inquiries") }}
+        </h3>
+        
+        <div class="property-list">
+          {% for contact in contacts %}
+          <div class="property-card mb-4 p-4">
+            <div class="row align-items-center">
+              
+              <!-- Property Info -->
+              <div class="col-12 col-lg-5 mb-3 mb-lg-0">
+                <div class="property-title mb-2">
+                  <i class="fas fa-home text-success mr-2"></i>
+                  {{ contact.listing }}
+                </div>
+                <div class="property-date">
+                  <i class="far fa-calendar-alt mr-2"></i>
+                  {{ _("Inquired on") }} {{ contact.contact_date|date:"d M Y" }}
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="col-12 col-lg-7">
+                <div class="action-btn-group">
+                  <div class="row">
+                    
+                    <!-- View Listing Button -->
+                    <div class="col-12 col-sm-6 col-md-4 mb-2">
+                      <a class="btn btn-outline-primary btn-block" 
+                         href="{% url 'listing' contact.listing_id %}">
+                        <i class="fas fa-eye mr-2"></i>
+                        {{ _("View Listing") }}
+                      </a>
+                    </div>
+
+                    <!-- Documents Button -->
+                    {% if contact.can_access_documents %}
+                    <div class="col-12 col-sm-6 col-md-4 mb-2">
+                      <a class="btn btn-success btn-block" 
+                         href="{% url 'documents' contact.listing.id %}">
+                        <i class="fas fa-folder-open mr-2"></i>
+                        {{ _("Documents") }}
+                        <span class="badge badge-light ml-1">
+                          {{ contact.listing.id|get_nr_docs }}
+                        </span>
+                      </a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Chat History Button -->
+                    {% if contact.chatmessage_set.all.count > 0 %}
+                    <div class="col-12 col-sm-6 col-md-4 mb-2">
+                      <a class="btn btn-outline-secondary btn-block" 
+                         href="{% url 'chat-history' contact.id %}">
+                        <i class="fas fa-comments mr-2"></i>
+                        {{ _("Chat History") }}
+                        <span class="badge badge-secondary ml-1">
+                          {{ contact.chatmessage_set.all.count }}
+                        </span>
+                      </a>
+                    </div>
+                    {% endif %}
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% else %}
+    
+    <!-- Empty State -->
+    <div class="row">
+      <div class="col-12">
+        <div class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <h3 class="text-muted mb-3">{{ _("No Inquiries Yet") }}</h3>
+          <p class="text-muted mb-4">
+            {{ _("You haven't made any inquiries about properties yet.") }}
+          </p>
+          <a href="{% url 'listings' %}" class="btn btn-success btn-lg">
+            <i class="fas fa-search mr-2"></i>
+            {{ _("Browse Properties") }}
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

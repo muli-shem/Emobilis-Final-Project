@@ -1,0 +1,189 @@
+{% load static %}
+
+<style>
+  .alert-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .custom-alert {
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    align-items: start;
+    animation: slideInRight 0.4s ease-out;
+  }
+  
+  .custom-alert i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+  }
+  
+  .custom-alert .alert-content {
+    flex: 1;
+  }
+  
+  .custom-alert .alert-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .custom-alert .alert-message {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
+  .custom-alert .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    opacity: 0.7;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 1rem;
+    transition: var(--transition-fast);
+  }
+  
+  .custom-alert .close-btn:hover {
+    opacity: 1;
+  }
+  
+  /* Success Alert */
+  .alert-success-custom {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+  }
+  
+  /* Error Alert */
+  .alert-danger-custom {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+  }
+  
+  /* Warning Alert */
+  .alert-warning-custom {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+  }
+  
+  /* Info Alert */
+  .alert-info-custom {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+  }
+  
+  .alert-fade-out {
+    animation: slideOutRight 0.4s ease-out forwards;
+  }
+  
+  @media (max-width: 576px) {
+    .alert-container {
+      top: 70px;
+      right: 10px;
+      left: 10px;
+      max-width: none;
+    }
+  }
+</style>
+
+<!-- Alert Container -->
+<div class="alert-container" id="alert-container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="custom-alert alert-{{ message.tags }}-custom" role="alert" data-alert>
+        
+        <!-- Alert Icon -->
+        {% if message.tags == 'success' %}
+          <i class="fas fa-check-circle"></i>
+        {% elif message.tags == 'error' or message.tags == 'danger' %}
+          <i class="fas fa-exclamation-circle"></i>
+        {% elif message.tags == 'warning' %}
+          <i class="fas fa-exclamation-triangle"></i>
+        {% elif message.tags == 'info' %}
+          <i class="fas fa-info-circle"></i>
+        {% else %}
+          <i class="fas fa-bell"></i>
+        {% endif %}
+        
+        <!-- Alert Content -->
+        <div class="alert-content">
+          <div class="alert-title">
+            {% if message.tags == 'success' %}
+              Success!
+            {% elif message.tags == 'error' or message.tags == 'danger' %}
+              Error!
+            {% elif message.tags == 'warning' %}
+              Warning!
+            {% elif message.tags == 'info' %}
+              Information
+            {% else %}
+              Notice
+            {% endif %}
+          </div>
+          <p class="alert-message">{{ message }}</p>
+        </div>
+        
+        <!-- Close Button -->
+        <button type="button" class="close-btn" onclick="closeAlert(this)">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<script>
+  // Auto-close alerts after 5 seconds
+  document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('[data-alert]');
+    
+    alerts.forEach(function(alert, index) {
+      setTimeout(function() {
+        closeAlert(alert.querySelector('.close-btn'));
+      }, 5000 + (index * 500)); // Stagger auto-close
+    });
+  });
+  
+  // Close alert function
+  function closeAlert(button) {
+    const alert = button.closest('[data-alert]');
+    if (alert) {
+      alert.classList.add('alert-fade-out');
+      setTimeout(function() {
+        alert.remove();
+      }, 400);
+    }
+  }
+</script>

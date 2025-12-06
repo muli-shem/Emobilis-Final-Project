@@ -1,0 +1,36 @@
+{% load static %}
+
+<!-- Professional Footer -->
+<footer id="main-footer">
+  <div class="container">
+    <div class="row align-items-center">
+      
+      <!-- Copyright -->
+      <div class="col-12 col-md-4 text-center text-md-left mb-3 mb-md-0">
+        <p class="mb-0">
+          &copy; <span class="year"></span> 
+          <a href="https://github.com/nimadorostkar" target="_blank" rel="noopener noreferrer">
+            Nima Dorostkar
+          </a>
+        </p>
+      </div>
+
+      <!-- Impressum Link -->
+      <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
+        <a href="{% url 'impressum' %}">
+          <i class="fas fa-file-contract mr-2"></i>
+          {{ _("Impressum") }}
+        </a>
+      </div>
+
+      <!-- Privacy Link -->
+      <div class="col-12 col-md-4 text-center text-md-right">
+        <a href="{% url 'privacy' %}">
+          <i class="fas fa-shield-alt mr-2"></i>
+          {{ _("Privacy") }}
+        </a>
+      </div>
+
+    </div>
+  </div>
+</footer>

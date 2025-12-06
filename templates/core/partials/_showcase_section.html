@@ -1,0 +1,21 @@
+{% load static %}
+
+<!-- Inner Page Showcase Section -->
+<section id="showcase-inner" class="py-5 text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1 class="display-4 font-weight-bold">
+          {% block showcase_title %}
+            {{ page_title|default:"Property Listings" }}
+          {% endblock %}
+        </h1>
+        <p class="lead">
+          {% block showcase_subtitle %}
+            {{ page_subtitle|default:"Find your dream property" }}
+          {% endblock %}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
