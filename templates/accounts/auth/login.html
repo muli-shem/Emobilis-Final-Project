@@ -1,43 +1,162 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-
 {% block content %}
-<section id="login" class="py-5">
+<section id="login" class="py-5" style="min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
   <div class="container">
-    <div class="row">
-      <div class="col-md-6 mx-auto">
-        <div class="card">
-          <div class="card-header bg-primary text-white">
-
-            <h1 class="smaller-text">
-              <i class="fas fa-sign-in-alt"></i> {{ title }}
-            </h1>
-            
+    <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+      <div class="col-md-5 col-lg-4">
+        <div class="card border-0 shadow-lg" style="border-radius: 15px; overflow: hidden;">
+          
+          <!-- Header -->
+          <div class="card-header bg-white border-0 text-center pt-5 pb-4">
+            <div class="mb-3">
+              <div class="d-inline-flex align-items-center justify-content-center" 
+                   style="width: 70px; height: 70px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%;">
+                <i class="fas fa-sign-in-alt text-white" style="font-size: 2rem;"></i>
+              </div>
+            </div>
+            <h1 class="h3 font-weight-bold mb-2" style="color: #2d3748;">{{ title }}</h1>
+            <p class="text-muted mb-0">Welcome back! Please login to your account</p>
           </div>
-          <div class="card-body bg-light">
+          
+          <!-- Body -->
+          <div class="card-body px-4 py-4" style="background-color: #ffffff;">
+            
             <!-- Alerts -->
             {% include 'core/partials/_alerts.html' %}
+            
             <form action="{% url 'login' %}" method="POST">
               {% csrf_token %}
-              <div class="form-group">
-                <label for="email">{{ _("Email") }}</label>
-                <input type="email" name="email" class="form-control" required>
+              
+              <div class="form-group mb-4">
+                <label for="email" class="font-weight-600 mb-2" style="color: #4a5568; font-size: 0.9rem;">
+                  {{ _("Email") }}
+                </label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text border-right-0" style="background-color: #f7fafc; border-color: #e2e8f0;">
+                      <i class="fas fa-envelope text-muted"></i>
+                    </span>
+                  </div>
+                  <input type="email" 
+                         name="email" 
+                         class="form-control border-left-0" 
+                         placeholder="your@email.com"
+                         style="border-color: #e2e8f0; padding: 0.75rem;"
+                         required>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label for="password2">{{ _("Password") }}</label>
-                <input type="password" name="password" class="form-control" required>
+              <div class="form-group mb-4">
+                <label for="password" class="font-weight-600 mb-2" style="color: #4a5568; font-size: 0.9rem;">
+                  {{ _("Password") }}
+                </label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text border-right-0" style="background-color: #f7fafc; border-color: #e2e8f0;">
+                      <i class="fas fa-lock text-muted"></i>
+                    </span>
+                  </div>
+                  <input type="password" 
+                         name="password" 
+                         class="form-control border-left-0" 
+                         placeholder="Enter your password"
+                         style="border-color: #e2e8f0; padding: 0.75rem;"
+                         required>
+                </div>
               </div>
-              <div class="mb-2">
-                <small><a href="{% url 'password-reset' %}" class="primary">{{ _("Forgot password?") }}</a></small>
+              
+              <div class="mb-4 text-right">
+                <a href="{% url 'password-reset' %}" 
+                   class="text-decoration-none" 
+                   style="color: #667eea; font-size: 0.9rem; font-weight: 500;">
+                  {{ _("Forgot password?") }}
+                </a>
               </div>
-              <input type="submit" value="Login" class="btn btn-secondary btn-block">
+              
+              <button type="submit" 
+                      class="btn btn-block text-white font-weight-600 py-3 mb-3" 
+                      style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 8px; font-size: 1rem; transition: all 0.3s;">
+                <i class="fas fa-sign-in-alt mr-2"></i>Login
+              </button>
             </form>
+            
           </div>
+          
+          <!-- Footer -->
+          <div class="card-footer bg-light border-0 text-center py-3">
+            <p class="mb-0" style="color: #718096; font-size: 0.9rem;">
+              Don't have an account? 
+              <a href="{% url 'register' %}" class="text-decoration-none font-weight-600" style="color: #667eea;">
+                Sign up here
+              </a>
+            </p>
+          </div>
+          
         </div>
+        
+        <!-- Additional Info -->
+        <div class="text-center mt-4">
+          <p class="text-white mb-1" style="font-size: 0.85rem; opacity: 0.9;">
+            Secure login • Your data is protected
+          </p>
+        </div>
+        
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* Custom styles for enhanced login UI */
+  #login .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  }
+  
+  #login .input-group-text {
+    border: 1px solid #e2e8f0;
+  }
+  
+  #login button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+  }
+  
+  #login button[type="submit"]:active {
+    transform: translateY(0);
+  }
+  
+  #login .card {
+    animation: slideUp 0.5s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  #login a:hover {
+    text-decoration: underline !important;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    #login {
+      padding: 2rem 0;
+    }
+    
+    #login .card-header {
+      padding-top: 3rem;
+    }
+  }
+</style>
+
 {% endblock %}

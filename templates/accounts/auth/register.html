@@ -1,51 +1,237 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-
 {% block content %}
-<section id="register" class="py-5">
+<section id="register" class="py-5" style="min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
   <div class="container">
-
-
-    <div class="row">
-      <div class="col-md-6 mx-auto">
-        <div class="card">
-          <div class="card-header bg-primary text-white">
-            <h1 class="smaller-text">
-              <i class="fas fa-user-plus"></i> {{ title }}
-            </h1>
+    <div class="row justify-content-center align-items-center" style="min-height: 85vh;">
+      <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-lg" style="border-radius: 15px; overflow: hidden;">
+          
+          <!-- Header -->
+          <div class="card-header bg-white border-0 text-center pt-5 pb-4">
+            <div class="mb-3">
+              <div class="d-inline-flex align-items-center justify-content-center" 
+                   style="width: 70px; height: 70px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%;">
+                <i class="fas fa-user-plus text-white" style="font-size: 2rem;"></i>
+              </div>
+            </div>
+            <h1 class="h3 font-weight-bold mb-2" style="color: #2d3748;">{{ title }}</h1>
+            <p class="text-muted mb-0">Create your account to get started</p>
           </div>
-          <div class="card-body bg-light ">
+          
+          <!-- Body -->
+          <div class="card-body px-4 py-4" style="background-color: #ffffff;">
+            
             <!-- Alerts -->
             {% include 'core/partials/_alerts.html' %}
+            
             <form action="{% url 'register' %}" method="POST">
               {% csrf_token %}
-              <div class="form-group">
-                <label for="first_name">{{ _("Firstname") }}</label>
-                <input type="text" name="first_name" class="form-control" required>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-3">
+                    <label for="first_name" class="font-weight-600 mb-2" style="color: #4a5568; font-size: 0.9rem;">
+                      {{ _("Firstname") }}
+                    </label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text border-right-0" style="background-color: #f7fafc; border-color: #e2e8f0;">
+                          <i class="fas fa-user text-muted"></i>
+                        </span>
+                      </div>
+                      <input type="text" 
+                             name="first_name" 
+                             class="form-control border-left-0" 
+                             placeholder="John"
+                             style="border-color: #e2e8f0; padding: 0.75rem;"
+                             required>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="form-group mb-3">
+                    <label for="last_name" class="font-weight-600 mb-2" style="color: #4a5568; font-size: 0.9rem;">
+                      {{ _("Lastname") }}
+                    </label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text border-right-0" style="background-color: #f7fafc; border-color: #e2e8f0;">
+                          <i class="fas fa-user text-muted"></i>
+                        </span>
+                      </div>
+                      <input type="text" 
+                             name="last_name" 
+                             class="form-control border-left-0" 
+                             placeholder="Doe"
+                             style="border-color: #e2e8f0; padding: 0.75rem;"
+                             required>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="last_name">{{ _(" Lastname") }}</label>
-                <input type="text" name="last_name" class="form-control" required>
+
+              <div class="form-group mb-3">
+                <label for="email" class="font-weight-600 mb-2" style="color: #4a5568; font-size: 0.9rem;">
+                  {{ _("Email") }}
+                </label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text border-right-0" style="background-color: #f7fafc; border-color: #e2e8f0;">
+                      <i class="fas fa-envelope text-muted"></i>
+                    </span>
+                  </div>
+                  <input type="email" 
+                         name="email" 
+                         class="form-control border-left-0" 
+                         placeholder="your@email.com"
+                         style="border-color: #e2e8f0; padding: 0.75rem;"
+                         required>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="email">{{ _("Email") }}</label>
-                <input type="email" name="email" class="form-control" required>
+
+              <div class="form-group mb-3">
+                <label for="password" class="font-weight-600 mb-2" style="color: #4a5568; font-size: 0.9rem;">
+                  {{ _("Password") }}
+                </label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text border-right-0" style="background-color: #f7fafc; border-color: #e2e8f0;">
+                      <i class="fas fa-lock text-muted"></i>
+                    </span>
+                  </div>
+                  <input type="password" 
+                         name="password" 
+                         class="form-control border-left-0" 
+                         placeholder="Create a strong password"
+                         style="border-color: #e2e8f0; padding: 0.75rem;"
+                         required>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="password2">{{ _("Password") }}</label>
-                <input type="password" name="password" class="form-control" required>
+              
+              <div class="form-group mb-4">
+                <label for="password2" class="font-weight-600 mb-2" style="color: #4a5568; font-size: 0.9rem;">
+                  {{ _("Confirm Password") }}
+                </label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text border-right-0" style="background-color: #f7fafc; border-color: #e2e8f0;">
+                      <i class="fas fa-lock text-muted"></i>
+                    </span>
+                  </div>
+                  <input type="password" 
+                         name="password2" 
+                         class="form-control border-left-0" 
+                         placeholder="Confirm your password"
+                         style="border-color: #e2e8f0; padding: 0.75rem;"
+                         required>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="password">{{ _("Confirm Password") }}</label>
-                <input type="password" name="password2" class="form-control" required>
+              
+              <button type="submit" 
+                      class="btn btn-block text-white font-weight-600 py-3 mb-3" 
+                      style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 8px; font-size: 1rem; transition: all 0.3s;">
+                <i class="fas fa-user-plus mr-2"></i>Register
+              </button>
+              
+              <div class="text-center mt-3">
+                <small class="text-muted">
+                  By registering, you agree to our Terms of Service and Privacy Policy
+                </small>
               </div>
-              <input type="submit" value="Register" class="btn btn-secondary btn-block">
             </form>
+            
           </div>
+          
+          <!-- Footer -->
+          <div class="card-footer bg-light border-0 text-center py-3">
+            <p class="mb-0" style="color: #718096; font-size: 0.9rem;">
+              Already have an account? 
+              <a href="{% url 'login' %}" class="text-decoration-none font-weight-600" style="color: #667eea;">
+                Login here
+              </a>
+            </p>
+          </div>
+          
         </div>
+        
+        <!-- Additional Info -->
+        <div class="text-center mt-4">
+          <p class="text-white mb-1" style="font-size: 0.85rem; opacity: 0.9;">
+            <i class="fas fa-shield-alt mr-1"></i>
+            Your information is safe and secure
+          </p>
+        </div>
+        
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* Custom styles for enhanced register UI */
+  #register .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  }
+  
+  #register .input-group-text {
+    border: 1px solid #e2e8f0;
+  }
+  
+  #register button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+  }
+  
+  #register button[type="submit"]:active {
+    transform: translateY(0);
+  }
+  
+  #register .card {
+    animation: slideUp 0.5s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  #register a:hover {
+    text-decoration: underline !important;
+  }
+  
+  /* Input validation styling */
+  #register .form-control:valid {
+    border-color: #48bb78;
+  }
+  
+  #register .form-control:invalid:not(:placeholder-shown) {
+    border-color: #f56565;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    #register {
+      padding: 2rem 0;
+    }
+    
+    #register .card-header {
+      padding-top: 3rem;
+    }
+    
+    #register .row > .col-md-6 {
+      margin-bottom: 0;
+    }
+  }
+</style>
+
 {% endblock %}

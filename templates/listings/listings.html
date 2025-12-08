@@ -4,156 +4,264 @@
 
 {% block extrastyle %}
 <style>
-  /* Listings Page Styles */
+/* ==============================
+   DESIGN TOKENS - PURPLE THEME
+============================== */
+:root {
+  --primary: #667eea;
+  --primary-dark: #764ba2;
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --shadow-sm: 0 6px 18px rgba(0,0,0,.06);
+  --shadow-md: 0 14px 35px rgba(0,0,0,.12);
+  --shadow-lg: 0 10px 20px rgba(102, 126, 234, 0.3);
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --transition: all .25s ease;
+}
+
+/* ==============================
+   HERO SECTION
+============================== */
+.listings-hero {
+  background:
+    linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)),
+    url('../img/building.jpg') center / cover no-repeat fixed;
+  padding: 4rem 0;
+  position: relative;
+}
+
+.listings-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  opacity: 0.9;
+  z-index: 0;
+}
+
+.listings-hero > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.listings-hero h1 {
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-shadow: 0 10px 40px rgba(0,0,0,.4);
+}
+
+.bg-blur-all {
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(14px);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255,255,255,.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+
+/* ==============================
+   BREADCRUMB
+============================== */
+.breadcrumb a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.breadcrumb a:hover {
+  color: var(--primary-dark);
+  text-decoration: none;
+}
+
+/* ==============================
+   RESULTS HEADER
+============================== */
+.results-header {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.results-count {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.results-count strong {
+  font-size: 1.6rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.results-count i {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ==============================
+   PROPERTY GRID
+============================== */
+#listings .row > div {
+  margin-bottom: 1.8rem;
+}
+
+/* ==============================
+   EMPTY STATE
+============================== */
+.empty-listings {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  border: 1px dashed var(--border);
+  padding: 4.5rem 2rem;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.empty-listings i {
+  font-size: 4.5rem;
+  color: var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.empty-listings h3 {
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.empty-listings p {
+  max-width: 420px;
+  margin: 0 auto 2rem;
+  color: var(--text-muted);
+}
+
+.empty-listings .btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border: none;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.empty-listings .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ==============================
+   PAGINATION
+============================== */
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+  gap: .6rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.custom-pagination .page-item {
+  list-style: none;
+}
+
+.custom-pagination .page-link {
+  min-width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.custom-pagination .page-link:hover {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.custom-pagination .page-item.active .page-link {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-color: var(--primary);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.custom-pagination .page-item.disabled .page-link {
+  opacity: .45;
+  cursor: not-allowed;
+  background: var(--surface-soft);
+}
+
+/* ==============================
+   PAGE INFO
+============================== */
+.text-muted strong {
+  color: var(--text-main);
+}
+
+/* ==============================
+   MOBILE
+============================== */
+@media (max-width: 768px) {
   .listings-hero {
-    background: linear-gradient(rgba(10, 22, 40, 0.85), rgba(10, 22, 40, 0.9)), 
-                url('../img/building.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     padding: 3rem 0;
   }
   
-  .listings-hero h1 {
-    color: white;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  }
-  
-  .results-header {
-    background: white;
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: var(--shadow-md);
-  }
-  
-  .results-count {
-    font-size: 1.1rem;
-    color: var(--gray-700);
-    font-weight: 600;
+  .custom-pagination .page-link {
+    min-width: 38px;
+    height: 38px;
+    font-size: .9rem;
   }
   
   .results-count strong {
-    color: var(--accent-green);
     font-size: 1.4rem;
   }
-  
-  /* Empty State */
-  .empty-listings {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: white;
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .empty-listings i {
-    font-size: 5rem;
-    color: var(--gray-400);
-    margin-bottom: 1.5rem;
-  }
-  
-  .empty-listings h3 {
-    color: var(--gray-700);
-    margin-bottom: 1rem;
-  }
-  
-  .empty-listings p {
-    color: var(--gray-600);
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-  }
-  
-  /* Pagination Styles */
-  .custom-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 3rem;
-    padding: 2rem 0;
-    flex-wrap: wrap;
-  }
-  
-  .custom-pagination .page-item {
-    list-style: none;
-  }
-  
-  .custom-pagination .page-link {
-    border: 2px solid var(--gray-300);
-    border-radius: var(--radius-md);
-    padding: 0.75rem 1rem;
-    color: var(--gray-700);
-    font-weight: 600;
-    transition: var(--transition-base);
-    text-decoration: none;
-    display: inline-block;
-    min-width: 45px;
-    text-align: center;
-    background: white;
-  }
-  
-  .custom-pagination .page-link:hover {
-    background: var(--accent-green);
-    border-color: var(--accent-green);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .custom-pagination .page-item.active .page-link {
-    background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
-    border-color: var(--accent-green);
-    color: white;
-    box-shadow: var(--shadow-md);
-  }
-  
-  .custom-pagination .page-item.disabled .page-link {
-    background: var(--gray-100);
-    border-color: var(--gray-200);
-    color: var(--gray-400);
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-  
-  .custom-pagination .page-item.disabled .page-link:hover {
-    transform: none;
-    box-shadow: none;
-    background: var(--gray-100);
-    border-color: var(--gray-200);
-    color: var(--gray-400);
-  }
-  
-  @media (max-width: 768px) {
-    .custom-pagination .page-link {
-      padding: 0.5rem 0.75rem;
-      min-width: 40px;
-      font-size: 0.9rem;
-    }
-  }
+}
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- Hero Section with Search -->
+<!-- HERO -->
 <section class="listings-hero">
   <div class="container">
     <div class="bg-blur-all p-4 p-md-5">
       <div class="text-center mb-4">
         <h1 class="display-4">{{ title|default:"Browse Properties" }}</h1>
       </div>
-      
-      <!-- Search Form -->
       {% include 'core/partials/_search.html' %}
     </div>
   </div>
 </section>
 
-<!-- Breadcrumb -->
-<section id="bc" class="py-3 bg-light">
+<!-- BREADCRUMB -->
+<section class="py-3 bg-light">
   <div class="container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb bg-transparent mb-0">
@@ -162,7 +270,7 @@
             <i class="fas fa-home"></i> {{ _("Home") }}
           </a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">
+        <li class="breadcrumb-item active">
           {{ _("Browse Listings") }}
         </li>
       </ol>
@@ -170,17 +278,16 @@
   </div>
 </section>
 
-<!-- Listings Section -->
+<!-- LISTINGS -->
 <section id="listings" class="py-5 bg-light">
   <div class="container">
-    
+
     {% if listings %}
-    
-    <!-- Results Header -->
-    <div class="results-header text-center">
+
+    <div class="results-header text-center mb-4">
       <div class="results-count">
-        <i class="fas fa-home mr-2 text-success"></i>
-        <strong>{{ listings.paginator.count }}</strong> 
+        <i class="fas fa-home mr-2"></i>
+        <strong>{{ listings.paginator.count }}</strong>
         {% if listings.paginator.count == 1 %}
           {{ _("Property Found") }}
         {% else %}
@@ -189,95 +296,60 @@
       </div>
     </div>
 
-    <!-- Property Grid -->
     <div class="row">
       {% for listing in listings %}
         {% include 'listings/_partials/_listing-box.html' %}
       {% endfor %}
     </div>
 
-    <!-- Pagination -->
     {% if listings.has_other_pages %}
-    <div class="row">
-      <div class="col-12">
-        <nav aria-label="Property listings pagination">
-          <ul class="custom-pagination">
-            
-            <!-- Previous Button -->
-            {% if listings.has_previous %}
-            <li class="page-item">
-              <a href="?page={{ listings.previous_page_number }}" 
-                 class="page-link"
-                 aria-label="Previous page">
-                &laquo;
-              </a>
-            </li>
-            {% else %}
-            <li class="page-item disabled">
-              <span class="page-link">&laquo;</span>
-            </li>
-            {% endif %}
+    <nav aria-label="Pagination">
+      <ul class="custom-pagination">
 
-            <!-- Page Numbers -->
-            {% for i in listings.paginator.page_range %}
-              {% if listings.number == i %}
-              <li class="page-item active" aria-current="page">
-                <span class="page-link">{{ i }}</span>
-              </li>
-              {% else %}
-              <li class="page-item">
-                <a href="?page={{ i }}" class="page-link">{{ i }}</a>
-              </li>
-              {% endif %}
-            {% endfor %}
+        {% if listings.has_previous %}
+        <li class="page-item">
+          <a href="?page={{ listings.previous_page_number }}" class="page-link">&laquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+        {% endif %}
 
-            <!-- Next Button -->
-            {% if listings.has_next %}
-            <li class="page-item">
-              <a href="?page={{ listings.next_page_number }}" 
-                 class="page-link"
-                 aria-label="Next page">
-                &raquo;
-              </a>
-            </li>
-            {% else %}
-            <li class="page-item disabled">
-              <span class="page-link">&raquo;</span>
-            </li>
-            {% endif %}
+        {% for i in listings.paginator.page_range %}
+          {% if listings.number == i %}
+          <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+          {% else %}
+          <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
 
-          </ul>
-        </nav>
-        
-        <!-- Page Info -->
-        <div class="text-center mt-3 text-muted">
-          {{ _("Page") }} <strong>{{ listings.number }}</strong> 
-          {{ _("of") }} <strong>{{ listings.paginator.num_pages }}</strong>
-        </div>
-      </div>
+        {% if listings.has_next %}
+        <li class="page-item">
+          <a href="?page={{ listings.next_page_number }}" class="page-link">&raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+        {% endif %}
+
+      </ul>
+    </nav>
+
+    <div class="text-center mt-3 text-muted">
+      {{ _("Page") }} <strong>{{ listings.number }}</strong>
+      {{ _("of") }} <strong>{{ listings.paginator.num_pages }}</strong>
     </div>
     {% endif %}
 
     {% else %}
-    
-    <!-- Empty State -->
-    <div class="row">
-      <div class="col-12">
-        <div class="empty-listings">
-          <i class="fas fa-search"></i>
-          <h3>{{ _("No Listings Available") }}</h3>
-          <p>{{ _("Check back later for new properties.") }}</p>
-          <a href="{% url 'index' %}" class="btn btn-success btn-lg">
-            <i class="fas fa-home mr-2"></i>
-            {{ _("Go Home") }}
-          </a>
-        </div>
-      </div>
+    <div class="empty-listings">
+      <i class="fas fa-search"></i>
+      <h3>{{ _("No Listings Available") }}</h3>
+      <p>{{ _("Check back later for new properties.") }}</p>
+      <a href="{% url 'index' %}" class="btn btn-lg">
+        <i class="fas fa-home mr-2"></i>{{ _("Go Home") }}
+      </a>
     </div>
-    
     {% endif %}
 
   </div>
 </section>
-
 {% endblock %}
